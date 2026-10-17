@@ -79,8 +79,9 @@ class TxnDb private constructor(context: Context) : SQLiteOpenHelper(context, "l
     }
 
     private fun findMatch(db: SQLiteDatabase, p: ParsedTxn, ts: Long): Txn? {
-        if (!p.upiRef.isNullOrBlank()) {
-            query("upi_ref=?", arrayOf(p.upiRef), limit = 1).firstOrNull()?.let { return it }
+        val ref = p.upiRef
+        if (!ref.isNullOrBlank()) {
+            query("upi_ref=?", arrayOf(ref), limit = 1).firstOrNull()?.let { return it }
         }
         return query(
             "amount_paise=? AND direction=? AND ts BETWEEN ? AND ?",
